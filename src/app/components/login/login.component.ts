@@ -1,23 +1,45 @@
 import { Component, OnInit } from '@angular/core';
+import { User} from '../../models/user';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  providers:[
+    UserService
+  ]
 })
 export class LoginComponent implements OnInit {
 
-  private textSample = 0;
-  private number1 = 0;
-  private number2 = 0;
+  
+  public user: User;
+  //otra forma de pulibcar un objeto, pero da error, por como se construye el objeto .>public user = new User();
 
-  constructor() { }
+  constructor(
+    private _userService: UserService
+  ) {
+
+    //inicializar en blanco
+    this.user = new User('','','','','','');
+   }
 
   ngOnInit() {
+    
+  }
+  onSubmit(){
+    //es el evento que se ejecuta, y donde se invoca el servicio
+    this._userService.login(this.user)
+    .subscribe(
+      response => {
+        console.log(response);
+      },
+      error => {
+        console.log(error);
+      }
+    ) 
   }
 
-  suma() {
-    this.textSample = this.number1 + this.number2;
-  }
+  
 
 }
